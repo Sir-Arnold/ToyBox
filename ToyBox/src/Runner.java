@@ -46,4 +46,14 @@ public class Runner
 
       }
    }
+   
+   public static void tick(double delta)
+   {
+   
+   }
+   
+   public static void render()
+   {
+   
+   }
 }
