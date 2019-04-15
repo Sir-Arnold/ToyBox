@@ -10,7 +10,6 @@ public abstract class PhysicsThing
    public float velAngular;
    public Vector force;
    float torque;
-   MyShapes shape;
    
    public PhysicsThing()
    {
