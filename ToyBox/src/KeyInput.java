@@ -13,4 +13,9 @@ public class KeyInput extends java.awt.event.KeyAdapter
      
      System.out.println("Key Input Constructed."); 
    } 
+   
+   public void keyPressed(KeyEvent e) 
+   { 
+      int key = e.getKeyCode(); 
+   }
 }

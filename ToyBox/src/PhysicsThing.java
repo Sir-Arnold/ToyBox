@@ -27,16 +27,16 @@ public abstract class PhysicsThing
       
    }
   
-   public void tick();
+   public abstract void tick();
   
-   public void render();
+   public abstract void render();
    
-   public boolean checkArea(Vector location);
+   public abstract boolean checkArea(Vector location);
   
    // given that a collision has occurred,
    // using the location of the collision, the direction at which the pusher was moving, and the magnitude of the push
    // both calculates the new velocity of the pushed and returns the magnitude of the reversed pushback
-   public double push(PhysicsThing otherThing, Vector location, Vector direction, double magnitude);
+   public abstract double push(PhysicsThing otherThing, Vector location, Vector direction, double magnitude);
      
-   public void pushed(Vector location, Vector direction, double magnitude);
+   public abstract void pushed(Vector location, Vector direction, double magnitude);
 }

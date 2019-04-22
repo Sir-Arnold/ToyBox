@@ -1,13 +1,58 @@
-public class Runner
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
+
+
+public class Runner extends Canvas implements Runnable
 {
+   public Graphics g;
+   Options options;
+   
+   Setting setting;
+   Window window;
+   
    public static long timer = 0;
+   
+   private Thread thread;
    
    public static void main(String[] args)
    {
    
    }
+   
+   public synchronized void start()
+   {
+      thread = new Thread(this);
+      thread.start();
+      running = true;
+   }
+   
+   public synchronized void stop()
+   {
+      try{
+         thread.join();
+         running = false;
+      }
+      catch(Exception e)
+      {
+         e.printStackTrace();
+      }
+   }
+   
+   public Runner()
+   {
+      setting = new Setting();
+      window = new Window(Options.WIDTH, Options.HEIGHT, "Toy Box", this);
+      
+      this.addKeyListener(new KeyInput(window));
+      
+      options = new Options();
+      
+      System.out.println(Options.getWIDTH());
+   }
 
-   public static void run()
+   public void run()
    {
       boolean running = true;
       int time = 0;
@@ -49,11 +94,26 @@ public class Runner
    
    public static void tick(double delta)
    {
-   
+      setting.tick();
    }
    
    public static void render()
    {
-   
+      BufferStrategy bs = this.getBufferStrategy();
+      if(bs == null)
+      {
+         this.createBufferStrategy(3);
+         return;
+      }
+      
+      g = bs.getDrawGraphics();
+      
+      g.setColor(Color.black);
+      g.fillRect(0,0, options.WIDTH, options.HEIGHT);
+      
+      Setting.render();
+      
+      g.dispose();
+      bs.show();
    }
 }

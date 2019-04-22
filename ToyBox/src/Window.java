@@ -4,11 +4,13 @@ import javax.swing.JFrame;
 
 public class Window
 {
+   protected JFrame frame;
+   
    Setting setting;
   
    public boolean menuState;   // controls set to true to start, false if in setting, reset to true when user goes back to menu
   
-   public Window(int width, int height, String title)
+   public Window(int width, int height, String title, Runner runner)
 	{
 		frame = new JFrame(title);
 		
@@ -19,10 +21,10 @@ public class Window
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
-		frame.add(game);
+		frame.add(runner);
 		frame.setVisible(true);
-		game.start();
-   
+      
+      runner.start();
    }
   
   
