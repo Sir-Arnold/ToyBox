@@ -7,6 +7,11 @@ public class Setting
    
    ArrayList<PhysicsThing> things = new ArrayList<PhysicsThing>();
    
+   public void tick()
+   {
+   
+   }
+   
    public void render()
    {
    

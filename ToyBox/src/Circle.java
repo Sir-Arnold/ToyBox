@@ -11,7 +11,7 @@ public class Circle extends PhysicsThing implements MyShapes
   
    public Circle()
    {
-      super;
+      super();
    }
   
    public void tick()
@@ -26,12 +26,12 @@ public class Circle extends PhysicsThing implements MyShapes
    
    public boolean checkArea(Vector location)
    {
-   
+      return false;
    }
    
    public double push(PhysicsThing otherThing, Vector location, Vector direction, double magnitude)
    {
-      
+      return 0;
    }
   
    public void pushed(Vector location, Vector direction, double magnitude)

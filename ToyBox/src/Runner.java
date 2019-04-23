@@ -13,12 +13,13 @@ public class Runner extends Canvas implements Runnable
    Window window;
    
    public static long timer = 0;
+   protected boolean running = false;
    
    private Thread thread;
    
    public static void main(String[] args)
    {
-   
+      Runner runner = new Runner();
    }
    
    public synchronized void start()
@@ -92,12 +93,12 @@ public class Runner extends Canvas implements Runnable
       }
    }
    
-   public static void tick(double delta)
+   public void tick(double delta)
    {
       setting.tick();
    }
    
-   public static void render()
+   public void render()
    {
       BufferStrategy bs = this.getBufferStrategy();
       if(bs == null)
@@ -111,7 +112,7 @@ public class Runner extends Canvas implements Runnable
       g.setColor(Color.black);
       g.fillRect(0,0, options.WIDTH, options.HEIGHT);
       
-      Setting.render();
+      setting.render();
       
       g.dispose();
       bs.show();
