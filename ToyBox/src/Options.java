@@ -12,8 +12,8 @@ public class Options
    
    public Options()
    {
-      WIDTH = 400;
-      HEIGHT = 400;
+      WIDTH = 1000;
+      HEIGHT = 1000;
       
       gravity = -9.8;
       

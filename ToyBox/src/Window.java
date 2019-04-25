@@ -21,7 +21,8 @@ public class Window
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
-		frame.add(runner);
+		
+      frame.getContentPane().add(runner);
 		frame.setVisible(true);
       
       runner.start();

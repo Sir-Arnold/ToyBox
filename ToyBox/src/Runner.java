@@ -7,6 +7,7 @@ import java.awt.image.BufferStrategy;
 public class Runner extends Canvas implements Runnable
 {
    public Graphics g;
+   
    Options options;
    
    Setting setting;
@@ -44,13 +45,15 @@ public class Runner extends Canvas implements Runnable
    public Runner()
    {
       setting = new Setting();
-      window = new Window(Options.WIDTH, Options.HEIGHT, "Toy Box", this);
+      options = new Options();
+      window = new Window(options.WIDTH, options.HEIGHT, "Toy Box", this);
+      
       
       this.addKeyListener(new KeyInput(window));
+      this.addMouseListener(new MyAdapter(window));
       
-      options = new Options();
       
-      System.out.println(Options.getWIDTH());
+      //System.out.println(Options.getWIDTH());
    }
 
    public void run()
