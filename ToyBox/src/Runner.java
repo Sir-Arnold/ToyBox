@@ -20,7 +20,21 @@ public class Runner extends Canvas implements Runnable
    
    public static void main(String[] args)
    {
-      Runner runner = new Runner();
+      javax.swing.SwingUtilities.invokeLater(new Runnable() {
+
+			public void run() {
+				Runner runner = new Runner();
+            runner.createGUI();
+			}
+		});
+
+      
+      //Runner runner = new Runner();
+   }
+   
+   public void createGUI()
+   {
+      window = new Window(options.WIDTH, options.HEIGHT, "Toy Box", this);
    }
    
    public synchronized void start()
@@ -46,11 +60,10 @@ public class Runner extends Canvas implements Runnable
    {
       setting = new Setting();
       options = new Options();
-      window = new Window(options.WIDTH, options.HEIGHT, "Toy Box", this);
       
       
-      this.addKeyListener(new KeyInput(window));
-      this.addMouseListener(new MyAdapter(window));
+      //this.addKeyListener(new KeyInput(window));
+      //this.addMouseListener(new MyAdapter(window));
       
       
       //System.out.println(Options.getWIDTH());
