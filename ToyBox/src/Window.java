@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JCheckBoxMenuItem;
@@ -18,38 +19,61 @@ public class Window implements ActionListener, ItemListener
    protected JFrame frame;
    
    Runner runner; // extends Canvas, and you can add a canvas to a Content Pane
+   JPanel runnerPanel;
    Setting setting;
    
    JTextArea jtAreaOutput;
    JScrollPane jspPane;
-  
-   public int MainMenuState;   // controls set to 0 to start, 1 if in setting, reset to 0 when user goes back to menu
    
-   //JMenuBar menuBar;
-   //JMenu menu;
-   //JMenuItem menuItem;
+   public String title;
+   public int width, height;
+   
+   
+   public JPanel bottomBar;
+   public int canvasHeight, bottomBarWidth, bottomBarHeight;
+   
+   
+   
+   public int MainMenuState;   // controls set to 0 to start, 1 if in setting, reset to 0 when user goes back to menu
+
   
    public Window(int width, int height, String title, Runner runner)
-	{
-		/*
-      frame = new JFrame(title);
-		
-		frame.setPreferredSize(new Dimension(width, height));
-		frame.setMaximumSize(new Dimension(width, height));
-		frame.setMinimumSize(new Dimension(width, height));
-      
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
-		
-      frame.getContentPane().add(runner);
-		frame.setVisible(true);
-      */
+	{  
+      this.title = title;
       this.runner = runner;
       
-      createGUI(width, height);
+      this.width = width;
+      this.height = height;
+      
+      bottomBarWidth = this.width;
+      bottomBarHeight = 100;
+      
+      canvasHeight = height;
+      this.height = canvasHeight + bottomBarHeight;
+      
+      bottomBar = createBottomBar();
+      
+      createGUI();
+      
       
       runner.start();
+   }
+   
+   
+   public JPanel createBottomBar()
+   {
+      JPanel bottomPanel = new JPanel();
+      //bottomPanel.setLayoutManager();
+      
+      JButton button1 = new JButton("Button 1");
+      
+      bottomPanel.setBounds(10, 10, bottomBarWidth, bottomBarHeight);
+      
+      button1.setActionCommand("button1");
+      
+      bottomPanel.add(button1);
+      
+      return bottomPanel;
    }
    
    public JMenuBar createJMenuBar() 
@@ -70,16 +94,23 @@ public class Window implements ActionListener, ItemListener
    }
 
    
-   private void createGUI(int width, int height) 
+   private void createGUI() 
    {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		// Create and set up the window.
-		JFrame frame = new JFrame("Physics Thing");
+		JFrame frame = new JFrame(title);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Window app = this;
-		frame.setJMenuBar(app.createJMenuBar());
+		
+      Window app = this;
+		
+      frame.setJMenuBar(app.createJMenuBar());
 		frame.setContentPane(app.createContentPane());
-		frame.setSize(500, 300);
+      
+      frame.setPreferredSize(new Dimension(width, height));
+      frame.setMaximumSize(new Dimension(width, height));
+		frame.setMinimumSize(new Dimension(width, height));
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
    }
       
@@ -89,24 +120,36 @@ public class Window implements ActionListener, ItemListener
 		JPanel jplContentPane = new JPanel(new BorderLayout());
 		jplContentPane.setLayout(new BorderLayout());
 		jplContentPane.setOpaque(true);
-		jtAreaOutput = new JTextArea(5, 30);
-		jtAreaOutput.setEditable(false);
-		jspPane = new JScrollPane(jtAreaOutput);
-		// Add the text area to the content pane.
-		
-      //jplContentPane.add(jspPane, BorderLayout.CENTER);
+      
       jplContentPane.add(runner);
+      jplContentPane.add(bottomBar, BorderLayout.PAGE_END);
+      
 		return jplContentPane;
   }
   
   public void actionPerformed(ActionEvent e) 
   {
-		JMenuItem source = (JMenuItem) (e.getSource());
-		String s = "Menu Item source: " + source.getText()
-				+ " (an instance of " + getClassName(source) + ")";
-		jtAreaOutput.append(s + "\n");
-		jtAreaOutput.setCaretPosition(jtAreaOutput.getDocument()
-				.getLength());
+		JMenuItem menuSource;
+      JButton buttonSource;
+      
+      JMenuItem menuItemReference = new JMenuItem();
+      JButton buttonReference = new JButton();
+      
+      if(e.getClass().getName().equals(menuItemReference.getClass().getName()))
+      {
+         menuSource = (JMenuItem) (e.getSource());
+		   String menuString = "Menu Item source: " + menuSource.getText()
+				+ " (an instance of " + getClassName(menuSource) + ")";
+		   System.out.println(menuString);
+      }
+      else if(e.getClass().getName().equals(buttonReference.getClass().getName()))
+      {      
+         buttonSource = (JButton) (e.getSource());
+         System.out.println("hello");
+         String buttonString = buttonSource.getActionCommand();
+         System.out.println(buttonString + " has been pressed");
+      }
+      
 	}
    
    public void itemStateChanged(ItemEvent e) {
@@ -131,5 +174,9 @@ public class Window implements ActionListener, ItemListener
 		return classString.substring(dotIndex + 1); // Returns only Class name
 	}
    
+   public int getBottomBarHeight()
+   {
+      return bottomBarHeight;
+   }
    
 }

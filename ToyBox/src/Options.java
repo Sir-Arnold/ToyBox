@@ -15,6 +15,7 @@ public class Options
       WIDTH = 800;
       HEIGHT = 800;
       
+      
       gravity = -9.8;
       
       repulsionMagnitude = 1;
