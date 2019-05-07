@@ -13,15 +13,19 @@ public abstract class PhysicsThing
    
    public PhysicsThing()
    {
+      position = new Vector();
+      
       position.setSize(2);
       position.add(0,0); position.add(1,0);
       
+      velLinear = new Vector();
       velLinear.setSize(2);
       velLinear.add(0,0); position.add(1,0);
       
       angle = 0f;
       velAngular = 0f;
       
+      force = new Vector();
       force.setSize(2);
       force.add(0,0); force.add(1,0);
       

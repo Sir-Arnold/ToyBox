@@ -36,6 +36,7 @@ public class Runner extends Canvas implements Runnable
 			public void run() {
 				Runner runner = new Runner();
             runner.createGUI();
+            //runner.run();
 			}
 		});
 
