@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Vector;
+import java.awt.*;
 
 public abstract class PhysicsThing
 {
@@ -13,15 +14,39 @@ public abstract class PhysicsThing
    
    public PhysicsThing()
    {
+      position = new Vector();
+      
       position.setSize(2);
       position.add(0,0); position.add(1,0);
       
+      velLinear = new Vector();
       velLinear.setSize(2);
       velLinear.add(0,0); position.add(1,0);
       
       angle = 0f;
       velAngular = 0f;
       
+      force = new Vector();
+      force.setSize(2);
+      force.add(0,0); force.add(1,0);
+      
+   }
+   
+   public PhysicsThing(int x, int y)
+   {
+      position = new Vector();
+      
+      position.setSize(2);
+      position.add(x); position.add(y);
+      
+      velLinear = new Vector();
+      velLinear.setSize(2);
+      velLinear.add(0,0); position.add(1,0);
+      
+      angle = 0f;
+      velAngular = 0f;
+      
+      force = new Vector();
       force.setSize(2);
       force.add(0,0); force.add(1,0);
       
@@ -29,7 +54,7 @@ public abstract class PhysicsThing
   
    public abstract void tick();
   
-   public abstract void render();
+   public abstract void render(Graphics2D g2);
    
    public abstract boolean checkArea(Vector location);
   

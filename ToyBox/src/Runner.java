@@ -36,6 +36,7 @@ public class Runner extends Canvas implements Runnable
 			public void run() {
 				Runner runner = new Runner();
             runner.createGUI();
+            //runner.run();
 			}
 		});
 
@@ -136,10 +137,17 @@ public class Runner extends Canvas implements Runnable
       
       g = bs.getDrawGraphics();
       
+      Graphics2D g2 = (Graphics2D) g;
+      RenderingHints rh = new RenderingHints(
+             RenderingHints.KEY_ANTIALIASING,
+             RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setRenderingHints(rh);
+      
       g.setColor(Color.black);
       g.fillRect(0,0, options.WIDTH, options.HEIGHT);
       
-      setting.render();
+      g2.setColor(Color.BLUE);
+      setting.render(g2);
       
       g.dispose();
       bs.show();
