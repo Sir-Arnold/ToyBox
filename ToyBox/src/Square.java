@@ -1,4 +1,5 @@
 import java.util.Vector;
+import java.awt.*;
 
 public class Square extends PhysicsThing implements MyShapes
 {
@@ -19,7 +20,7 @@ public class Square extends PhysicsThing implements MyShapes
    
    }
   
-   public void render()
+   public void render(Graphics2D g2)
    {
    
    }
