@@ -29,5 +29,9 @@ public class Options
       return WIDTH;
    }
    
+   public static double getGravity()
+   {
+      return gravity;
+   }
    
 }

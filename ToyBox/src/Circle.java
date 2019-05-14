@@ -29,7 +29,7 @@ public class Circle extends PhysicsThing implements MyShapes
   
    public void tick()
    {
-      
+      decidePushes();
    }
   
    public void render(Graphics2D g2)

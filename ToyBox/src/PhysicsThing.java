@@ -9,8 +9,9 @@ public abstract class PhysicsThing
    public Vector velLinear;
    public float angle;
    public float velAngular;
-   public Vector force;
+   public Vector forces;
    float torque;
+   float mass;
    
    public PhysicsThing()
    {
@@ -26,9 +27,10 @@ public abstract class PhysicsThing
       angle = 0f;
       velAngular = 0f;
       
-      force = new Vector();
-      force.setSize(2);
-      force.add(0,0); force.add(1,0);
+      mass = 1f;
+      
+      forces = new Vector();
+      forces.add(0, createGravity());
       
    }
    
@@ -46,10 +48,10 @@ public abstract class PhysicsThing
       angle = 0f;
       velAngular = 0f;
       
-      force = new Vector();
-      force.setSize(2);
-      force.add(0,0); force.add(1,0);
+      mass = 1f; // should pass this as a parameter here
       
+      forces = new Vector();
+      forces.add(0, createGravity());
    }
   
    public abstract void tick();
@@ -64,4 +66,18 @@ public abstract class PhysicsThing
    public abstract double push(PhysicsThing otherThing, Vector location, Vector direction, double magnitude);
      
    public abstract void pushed(Vector location, Vector direction, double magnitude);
+   
+   public void decidePushes()
+   {
+      
+   }
+   
+   public Vector createGravity()
+   {
+      Vector gravity = new Vector();
+      gravity.add((float)((Options.getGravity()) * mass));
+      gravity.add((float)((4/3) * Math.PI));
+      
+      return gravity;
+   }
 }
