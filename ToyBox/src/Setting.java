@@ -5,7 +5,7 @@ import java.awt.*;
 public class Setting
 {
    public boolean pauseState;
-   
+   private double delta;
    public ArrayList<PhysicsThing> things;
    
    
@@ -14,10 +14,12 @@ public class Setting
       things = new ArrayList<PhysicsThing>();
    }
    
-   public void tick()
+   public void tick(double delta)
    {
+      this.delta = delta;
+      
       for(PhysicsThing thing: things)
-         thing.tick();
+         thing.tick(delta);
          
       if(things.size() == 0)
       {
@@ -27,7 +29,7 @@ public class Setting
       for(PhysicsThing thing: things)
       {
          if(findCollisions() == false)
-            thing.tick();
+            thing.tick(delta);
       }
    }
    

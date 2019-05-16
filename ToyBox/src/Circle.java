@@ -10,6 +10,8 @@ public class Circle extends PhysicsThing implements MyShapes
    public float myVelAngular;
    public Vector myForce;
    float myTorque;
+   
+   double delta; 
   
    public Circle()
    {
@@ -27,9 +29,16 @@ public class Circle extends PhysicsThing implements MyShapes
       radius = rad;
    }
   
-   public void tick()
+   public void tick(double delta)
    {
-      decidePushes();
+      this.delta = delta;
+      decidePushes(delta);
+      
+      int newX = (int) position.get(0) + (int) (double) velLinear.get(0);
+      int newY = (int) position.get(1) + (int) (double) velLinear.get(1);
+      
+      position.add(0, newX);
+      position.add(1, newY);
    }
   
    public void render(Graphics2D g2)
@@ -50,12 +59,12 @@ public class Circle extends PhysicsThing implements MyShapes
       return inequality;
    }
    
-   public double push(PhysicsThing otherThing, Vector location, Vector direction, double magnitude)
+   public double push(float xForce, float yForce)
    {
       return 0;
    }
   
-   public void pushed(Vector location, Vector direction, double magnitude)
+   public void pushed(float xForce, float yForce)
    {
       
    }

@@ -10,14 +10,16 @@ public class Square extends PhysicsThing implements MyShapes
    public Vector force;
    float torque;
    
+   double delta;
+   
    public Square()
    {
       super();
    }
    
-   public void tick()
+   public void tick(double delta)
    {
-   
+      this.delta = delta;
    }
   
    public void render(Graphics2D g2)
@@ -30,12 +32,12 @@ public class Square extends PhysicsThing implements MyShapes
       return false;
    }
    
-   public double push(PhysicsThing otherThing, Vector location, Vector direction, double magnitude)
+   public double push(float xForce, float yForce)
    {
       return 0;
    }
   
-   public void pushed(Vector location, Vector direction, double magnitude)
+   public void pushed(float xForce, float yForce)
    {
    
    }

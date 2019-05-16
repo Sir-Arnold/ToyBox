@@ -123,7 +123,7 @@ public class Runner extends Canvas implements Runnable
    
    public void tick(double delta)
    {
-      setting.tick();
+      setting.tick(delta);
    }
    
    public void render()
