@@ -9,7 +9,7 @@ public abstract class PhysicsThing
    public Vector velLinear;
    public float angle;
    public float velAngular;
-   public Vector forces;
+   public ArrayList<Vector> forces;
    float torque;
    float mass;
    
@@ -22,14 +22,14 @@ public abstract class PhysicsThing
       
       velLinear = new Vector();
       velLinear.setSize(2);
-      velLinear.add(0,0); position.add(1,0);
+      velLinear.add(0,0.0); position.add(1,0.0);
       
       angle = 0f;
       velAngular = 0f;
       
       mass = 1f;
       
-      forces = new Vector();
+      forces = new ArrayList<Vector>();
       forces.add(0, createGravity());
       
    }
@@ -43,14 +43,14 @@ public abstract class PhysicsThing
       
       velLinear = new Vector();
       velLinear.setSize(2);
-      velLinear.add(0,0); position.add(1,0);
+      velLinear.add(0,0.0); position.add(1,0.0);
       
       angle = 0f;
       velAngular = 0f;
       
       mass = 1f; // should pass this as a parameter here
       
-      forces = new Vector();
+      forces = new ArrayList<Vector>();
       forces.add(0, createGravity());
    }
   
@@ -72,9 +72,9 @@ public abstract class PhysicsThing
       float xForce = 0;
       float yForce = 0;
       
-      for(int i = 0; i <= forces.capacity(); i++)
+      for(int i = 0; i < forces.size(); i++)
       {
-         Vector force = (Vector) forces.get(i);
+         Vector force = forces.get(i);
          
          xForce += (float) force.get(0);
          yForce += (float) force.get(1);
@@ -85,11 +85,19 @@ public abstract class PhysicsThing
       double xAccel = xForce / mass;
       double yAccel = yForce / mass;
       
-      double newVelX = (double) velLinear.get(0) + xAccel * delta;
-      double newVelY = (double) velLinear.get(1) + yAccel * delta;
+      Vector aVelLinear = new Vector();
       
-      velLinear.add(0, newVelX);
-      velLinear.add(1, newVelY);
+      aVelLinear.add(0, this.getVelLinear().get(0));
+      aVelLinear.add(1, this.getVelLinear().get(1));
+      
+      double newVelX = ((double) aVelLinear.get(0)) + xAccel * delta;
+      double newVelY = ((double) aVelLinear.get(0)) + yAccel * delta;
+      
+      Vector newVelLinear = new Vector();
+      newVelLinear.add(0, newVelX);
+      newVelLinear.add(1, newVelY);
+      
+      this.setVelLinear(newVelLinear);
       
       
    }
@@ -102,4 +110,8 @@ public abstract class PhysicsThing
       
       return gravity;
    }
+   
+   public abstract Vector getVelLinear();
+   
+   public abstract void setVelLinear(Vector newVel);
 }

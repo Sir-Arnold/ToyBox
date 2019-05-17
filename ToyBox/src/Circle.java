@@ -34,11 +34,11 @@ public class Circle extends PhysicsThing implements MyShapes
       this.delta = delta;
       decidePushes(delta);
       
-      int newX = (int) position.get(0) + (int) (double) velLinear.get(0);
-      int newY = (int) position.get(1) + (int) (double) velLinear.get(1);
+      int newX = (int) ((int) myPosition.get(0) + (int) (double) myVelLinear.get(0));
+      int newY = (int) ((int) myPosition.get(1) + (int) (double) myVelLinear.get(1));
       
-      position.add(0, newX);
-      position.add(1, newY);
+      myPosition.add(0, newX);
+      myPosition.add(1, newY);
    }
   
    public void render(Graphics2D g2)
@@ -69,4 +69,13 @@ public class Circle extends PhysicsThing implements MyShapes
       
    }
    
+   public Vector getVelLinear()
+   {
+      return myVelLinear;
+   }
+   
+   public void setVelLinear(Vector newVel)
+   {
+      myVelLinear = newVel;
+   }
 }

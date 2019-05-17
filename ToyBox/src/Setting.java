@@ -24,6 +24,7 @@ public class Setting
       if(things.size() == 0)
       {
          addObject(new Circle(100, 100, 50));
+         addObject(new Square(500, 500, 50));
       }
       
       for(PhysicsThing thing: things)
