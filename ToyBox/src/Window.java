@@ -60,8 +60,10 @@ public class Window implements ActionListener, ItemListener
       
       canvasHeight = height;
       
-      createGUI();
+      this.runner = runner;
+      this.setting = runner.getSetting();
       
+      createGUI();
       
       runner.start();
    }
@@ -82,20 +84,55 @@ public class Window implements ActionListener, ItemListener
    public JPanel createBottomBar()
    {
        JPanel bottomPanel = new JPanel(new FlowLayout());
-      
-       JButton button1 = new JButton("Button 1");
-      
+       
        bottomPanel.setBounds(0, 0, bottomBarWidth, bottomBarHeight);
        bottomPanel.setBackground(bottomPanelBG);
-      
+       
+       JButton button1 = new JButton("Toggle Pause");
        button1.setActionCommand("button1");
        button1.addActionListener(new ActionListener() {
     	   public void actionPerformed(ActionEvent e){  
-               System.out.println(button1.getActionCommand() + " has been pressed"); 
+               runner.togglePause();
+    	   }
+       });
+       
+       JButton button2 = new JButton("Increase velX");
+       button2.setActionCommand("button2");
+       button2.addActionListener(new ActionListener() {
+    	   public void actionPerformed(ActionEvent e){  
+               setting.increaseVelX();
+    	   }
+       });
+       
+       JButton button3 = new JButton("Decrease velX");
+       button3.setActionCommand("button3");
+       button3.addActionListener(new ActionListener() {
+    	   public void actionPerformed(ActionEvent e){  
+               setting.decreaseVelX();
+    	   }
+       });
+       
+       JButton button4 = new JButton("Increase velY");
+       button4.setActionCommand("button4");
+       button4.addActionListener(new ActionListener() {
+    	   public void actionPerformed(ActionEvent e){  
+               setting.increaseVelY();
+    	   }
+       });
+       
+       JButton button5 = new JButton("Decrease velY");
+       button5.setActionCommand("button5");
+       button5.addActionListener(new ActionListener() {
+    	   public void actionPerformed(ActionEvent e){  
+               setting.decreaseVelY();
     	   }
        });
       
        bottomPanel.add(button1);
+       bottomPanel.add(button2);
+       bottomPanel.add(button3);
+       bottomPanel.add(button4);
+       bottomPanel.add(button5);
       
        return bottomPanel;
    }
@@ -111,10 +148,10 @@ public class Window implements ActionListener, ItemListener
        menu1 = new JMenu("Menu");
        mainMenuBar.add(menu1);
       
-       close = new JMenuItem("Close Window");
+       close = new JMenuItem("Reset Setting");
        close.addActionListener(new ActionListener() {
     	   public void actionPerformed(ActionEvent e){  
-               System.out.println("Close Window has been pressed"); 
+               Setting.reset(setting); 
     	   }
        });
        
@@ -227,4 +264,8 @@ public class Window implements ActionListener, ItemListener
       return bottomBarHeight;
    }
    
+   public void setSetting(Setting setting)
+   {
+	   this.setting = setting;
+   }
 }
