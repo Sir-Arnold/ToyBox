@@ -155,14 +155,6 @@ public class Window implements ActionListener, ItemListener
     	   }
        });
        
-       toMenu = new JMenuItem("To Main Menu");
-       toMenu.addActionListener(new ActionListener() {
-    	   public void actionPerformed(ActionEvent e){  
-               System.out.println("To Menu has been pressed"); 
-    	   }
-       });
-	   
-       menu1.add(toMenu);
        menu1.add(close);
       
        return mainMenuBar;
@@ -203,7 +195,7 @@ public class Window implements ActionListener, ItemListener
        jplContentPane.setPreferredSize(new Dimension(width + borderSize, height + borderSize));
        jplContentPane.setMaximumSize(new Dimension(width + borderSize, height + borderSize ));
        jplContentPane.setMinimumSize(new Dimension(width + borderSize, height + borderSize));
-	   jplContentPane.setBackground(Color.DARK_GRAY);
+	   jplContentPane.setBackground(Color.CYAN);
 	   
 	   jplContentPane.add(canvasHolder, BorderLayout.CENTER);
 	   jplContentPane.add(bottomBar, BorderLayout.PAGE_END);

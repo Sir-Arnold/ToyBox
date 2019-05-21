@@ -145,7 +145,7 @@ public class Runner extends Canvas implements Runnable
              RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setRenderingHints(rh);
       
-      g.setColor(Color.black);
+      g.setColor(Color.WHITE);
       g.fillRect(0,0, options.WIDTH, options.HEIGHT);
       
       g2.setColor(Color.BLUE);
