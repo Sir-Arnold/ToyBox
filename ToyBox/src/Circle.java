@@ -1,27 +1,23 @@
 import java.util.ArrayList;
 import java.util.*;
 import java.awt.*;
+import java.awt.geom.*;
 import java.awt.geom.Ellipse2D;
 
 public class Circle extends PhysicsThing implements MyShapes
 {
-   public int[] myPosition;
-   public double[] myVelLinear;
-   public double myAngle;
-   public float myVelAngular;
-   public float[] myForce;
-   double myTorque;
-   
    double delta; 
    
-   public int radius;
+   public Shape shape;
    
+   public int radius;
    public Ellipse2D ellipse;
   
    public Circle()
    {
       super(); 
       
+      radius = 10;
       type = "circle";
    }
    
@@ -36,22 +32,16 @@ public class Circle extends PhysicsThing implements MyShapes
       myPosition[1] = y;
       
       radius = rad;
-      
       ellipse = new Ellipse2D.Double((double) x, (double) y, radius * 2.0, radius * 2.0);
-      
       
       updateShape();
    }
   
    public void tick(double delta)
    {
-      //checkCollisions();
-	   
-	  this.delta = delta;
+      this.delta = delta;
       decidePushes(delta);
-      
       move(delta);
-      
       updateShape();
    }
   
@@ -63,8 +53,6 @@ public class Circle extends PhysicsThing implements MyShapes
    
    public void move(double delta)
    {
-	   angle += velAngular * delta;
-	   
 	   int newX = (int) (position[0] +  velLinear[0]);
 	   int newY = (int) (position[1] +  velLinear[1]);
 	      
@@ -131,6 +119,8 @@ public class Circle extends PhysicsThing implements MyShapes
 	   min[1] = position[1] - radius;
 	   max[0] = position[0] + radius;
 	   max[1] = position[1] + radius;
+	   
+	   shape = ellipse;
    }
    
    public Shape getShape()
@@ -147,40 +137,4 @@ public class Circle extends PhysicsThing implements MyShapes
    {
 	   return radius;
    }
-
-   public int findX(int y) 
-   {
-	   int someY = position[1] - y;
-	   int someX = 0;
-	   
-	   someX = (int) Math.sqrt(Math.pow(radius, 2) - Math.pow(someY, 2));
-	   someX += position[0];
-	   
-	   return 0;
-   }
-   
-   public int findY(int x) 
-   {
-	   return 0;
-   }
-
-	protected int findYWithMaxX() 
-	{
-		return position[1];
-	}
-
-	protected int findXWithMaxY() 
-	{
-		return position[0];
-	}
-
-	protected int findYWithMinX() 
-	{
-		return position[1];
-	}
-
-	protected int findXWithMinY() 
-	{
-		return position[0];
-	}
 }
