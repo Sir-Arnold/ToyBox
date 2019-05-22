@@ -6,12 +6,12 @@ import java.awt.geom.Ellipse2D;
 
 public class Circle extends PhysicsThing implements MyShapes
 {
-   double delta; 
+   double delta;                            // the time since the circle was last processed
    
-   public Shape shape;
+   Shape shape;                   // the geometric shape associated with the Circle object
    
-   public int radius;
-   public Ellipse2D ellipse;
+   protected int radius;                    // radius value is specific to circle, used in collisions and rendering
+   protected Ellipse2D ellipse;             // ellipse 
   
    public Circle()
    {
@@ -19,24 +19,23 @@ public class Circle extends PhysicsThing implements MyShapes
       
       radius = 10;
       type = "circle";
+      ellipse = new Ellipse2D.Double((double) x, (double) y, radius * 2.0, radius * 2.0);
+      updateShape();
    }
    
+   // @param x location, y location, radius
    public Circle(int x, int y, int rad)
    {
       super(x,y);
       
       type = "circle";
       
-      myPosition = new int[2];
-      myPosition[0] = x;
-      myPosition[1] = y;
-      
       radius = rad;
       ellipse = new Ellipse2D.Double((double) x, (double) y, radius * 2.0, radius * 2.0);
-      
       updateShape();
    }
-  
+   
+   // given the time since the program last updated, update the circle
    public void tick(double delta)
    {
       this.delta = delta;
@@ -45,12 +44,14 @@ public class Circle extends PhysicsThing implements MyShapes
       updateShape();
    }
   
+   // given what graphics objects to draw the circle with, draw the circle
    public void render(Graphics2D g2)
    {
-      g2.drawOval((int) position[0], (int) position[1], radius * 2, radius * 2);
-      g2.fillOval((int) position[0], (int) position[1], radius * 2, radius * 2);  // @param: (x, y, width, height)
+      g2.drawOval((int) position[0], (int) position[1], radius * 2, radius * 2);  // @param: (x, y, width, height)
+      g2.fillOval((int) position[0], (int) position[1], radius * 2, radius * 2);  // arbitrarily fills over the outline
    }
    
+   // given that the linear velocity has already been calculated, move the circle to its new x and y
    public void move(double delta)
    {
 	   int newX = (int) (position[0] +  velLinear[0]);
@@ -60,6 +61,7 @@ public class Circle extends PhysicsThing implements MyShapes
 	   position[1] = newY;
    }
    
+   // not used in the program but determines if a given point location falls within the radius of the circle
    public boolean checkArea(int[] location)
    {
       int h = (int) location[0];
@@ -100,16 +102,6 @@ public class Circle extends PhysicsThing implements MyShapes
    public double[] getVelLinear()
    {
       return myVelLinear;
-   }
-   
-   public void setValues(int[] position, double[] velLinear, double angle, float velAngular, double torque)
-   {
-	   myPosition = position;
-	   myVelLinear = velLinear;
-	   myAngle = angle;
-	   myVelAngular = velAngular;
-	   myTorque = torque;
-	   
    }
    
    public void updateShape()
