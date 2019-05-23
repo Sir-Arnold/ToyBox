@@ -14,7 +14,7 @@ public class Options
       HEIGHT = 800;
       
       SETTING_WIDTH = WIDTH - 50;
-      SETTING_HEIGHT = HEIGHT - 160;
+      SETTING_HEIGHT = HEIGHT - 150;
       
       INIT_VELX = Runner.initVelX;
       INIT_VELY = Runner.initVelY;

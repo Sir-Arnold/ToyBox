@@ -133,12 +133,6 @@ public abstract class PhysicsThing
    
    public abstract int hittingWall();
    
-   public abstract int findX(int y);
-   
-   public abstract int findY(int x);
-   
-   public abstract float[] getForce();
-   
    public abstract Shape getShape();
    
    public abstract int getRadius();
@@ -188,7 +182,8 @@ public abstract class PhysicsThing
    // not used in the program's current state
    public void pushedByWall(int wallOperand)
    {
-	   int[] targetVertice = new int[2];
+	   /*
+      int[] targetVertice = new int[2];
 	   if(wallOperand == 0)
 	   {
 		   targetVertice[0] = findXWithMinY();
@@ -244,6 +239,7 @@ public abstract class PhysicsThing
 			   addForce(targetVertice[0], targetVertice[1], velLinear[0] * mass * -1, 0); 
 		   }
 	   }
+      */
    }
    
    // resolve how the applied forces affect velocity

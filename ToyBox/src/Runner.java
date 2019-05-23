@@ -14,7 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JFrame;
 import java.awt.image.BufferStrategy;
 
-
+// The Runner is both the manager of what is happening within the program and the canvas which is painted within the window
 public class Runner extends Canvas implements Runnable
 {
    
@@ -34,6 +34,12 @@ public class Runner extends Canvas implements Runnable
 				runner.createGUI();
 			}
 		});
+   }
+   
+   public Runner()
+   {
+      setting = new Setting(this);
+      options = new Options();
    }
    
    public void createGUI()
@@ -60,34 +66,22 @@ public class Runner extends Canvas implements Runnable
          e.printStackTrace();
       }
    }
-   
-   public Runner()
-   {
-      setting = new Setting(this);
-      options = new Options();
-      
-      
-      //this.addKeyListener(new KeyInput(window));
-      //this.addMouseListener(new MyAdapter(window));
-      
-      
-      //System.out.println(Options.getWIDTH());
-   }
 
    public void run()
    {
       pause = false;
 	   
-	  boolean running = true;
+	   boolean running = true;
       int time = 0;
       long passedTime = 0;
       long lastTime = System.nanoTime();
       double amountOfTicks = 60.0;                 // ticks per second - same as UPDATE_CAP
       double amountOfFrames = 60.0;                // frames per second - same as UPDATE_CAP
-      double nsPerSec = 1000000000.0;      
-      float delta = 0f; 
-      timer = 0;
+      double nsPerSec = 1000000000.0;              // nanoSeconds per second    
+      float delta = 0f;                            // explained later
+      timer = 0;                                   // precise timer for timing how long the program has been running, saved to the runner and can be accessed elsewhere in the program
       int frames = 0;
+      double startTime = System.currentTimeMillis();
       
       int iterator = 0;
       
@@ -101,24 +95,29 @@ public class Runner extends Canvas implements Runnable
          
          while(delta >= 1)                                      // delta is representing the amount of updates that should be processed, where if it is more than or equal to 1 it processes an update
          {
+            Runner.addTime(1 / 60);
             frames += 1;
                                                                   
-            if(pause == false)                                      // (delta / UPDATE_CAP) represents the real time in seconds since last updated (tick and render)
-            	tick(delta / UPDATE_CAP);                           // tells runner to tick, passing the time in seconds since last update, as of 5/19 the average value of this is 
+            if(pause == false)                                  // (delta / UPDATE_CAP) represents the real time in seconds since last updated (tick and render)
+            	tick(delta / UPDATE_CAP);                        // tells runner to tick, passing the time in seconds since last update, as of 5/19 the average value of this is 
             render();
             delta--;
-            //System.out.println(frames);
          }
          
-         if(frames >= amountOfTicks) 
+         if(frames >= amountOfTicks)                            // indicates the number of seconds that have passed since the program started
          {
         	 frames = 0;
              time += 1;
              System.out.println(">>> " + time + " <<<"); 
          }
          
+         if(System.currentTimeMillis() - startTime > timer)     // updates timer (different from time in that time is just used to indicate the full seconds that have passed)
+         {
+            timer += 10;
+         }
+         
          iterator++;
-         //System.out.println("Iteration: " + iterator + " complete at " + timer + " seconds.");
+         System.out.println("Iteration: " + iterator + " complete at " + timer/1000 + " seconds.");    // Console will be completely flooded by this, if it is working correctly
          
       }
    }
@@ -128,18 +127,20 @@ public class Runner extends Canvas implements Runnable
       setting.tick(delta);
    }
    
+   // at each step, paints a picture of the program based on the valaues stored within the program
    public void render()
    {
-      BufferStrategy bs = this.getBufferStrategy();
+      BufferStrategy bs = this.getBufferStrategy();              // A buffer stragetgy is important because without a buffer, the computer won't have anything to show while it is computing what it is supposed to render
       if(bs == null)
       {
-         this.createBufferStrategy(3);
+         this.createBufferStrategy(3);                           // creates a buffer strategy for the Runner object and applies it to the Runner
          return;
       }
       
-      g = bs.getDrawGraphics();
+      g = bs.getDrawGraphics();                                  // Graphics g is set to the graphics of the buffer
       
-      Graphics2D g2 = (Graphics2D) g;
+      Graphics2D g2 = (Graphics2D) g;                            // 
+      
       RenderingHints rh = new RenderingHints(
              RenderingHints.KEY_ANTIALIASING,
              RenderingHints.VALUE_ANTIALIAS_ON);
@@ -147,11 +148,12 @@ public class Runner extends Canvas implements Runnable
       
       g.setColor(Color.WHITE);
       g.fillRect(0,0, options.WIDTH, options.HEIGHT);
-      
       g2.setColor(Color.BLUE);
+      
       setting.render(g2);
       
       g.dispose();
+      
       bs.show();
    }
    
@@ -193,6 +195,10 @@ public class Runner extends Canvas implements Runnable
 	   System.out.println(string);
    }
    
+   public static void addTime(double time)
+   {
+      timer += time;
+   }
    
    
    // FIELDS

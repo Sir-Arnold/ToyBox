@@ -37,17 +37,13 @@ public class Window implements ActionListener, ItemListener
    
    public JPanel bottomBar;
    public int canvasHeight, bottomBarWidth, bottomBarHeight;
-   
-   
-   
-   public int MainMenuState;   // controls set to 0 to start, 1 if in setting, reset to 0 when user goes back to menu
 
   
    public Window(int width, int height, String title, Runner runner)
    {  
       borderSize = 20;
 	   
-	  this.title = title;
+	   this.title = title;
       this.runner = runner;
       
       this.width = width;
@@ -149,14 +145,16 @@ public class Window implements ActionListener, ItemListener
        mainMenuBar.add(menu1);
       
        close = new JMenuItem("Reset Setting");
-       close.addActionListener(new ActionListener() {
-    	   public void actionPerformed(ActionEvent e){  
+       close.addActionListener(new ActionListener() 
+       {
+    	   public void actionPerformed(ActionEvent e)
+         {  
                Setting.reset(setting); 
     	   }
        });
        
        menu1.add(close);
-      
+       
        return mainMenuBar;
    }
 
@@ -173,10 +171,10 @@ public class Window implements ActionListener, ItemListener
 	   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	   frame.setLayout(new BorderLayout());
 	   
-       Window app = this;
+      Window app = this;
       
-       frame.setPreferredSize(new Dimension(width, height));
-       frame.setMaximumSize(new Dimension(width, height));
+      frame.setPreferredSize(new Dimension(width, height));
+      frame.setMaximumSize(new Dimension(width, height));
 	   frame.setMinimumSize(new Dimension(width, height));
 	   frame.setResizable(false);
 	   frame.setLocationRelativeTo(null);
@@ -192,9 +190,9 @@ public class Window implements ActionListener, ItemListener
 	   // Create the content-pane-to-be.
 	   JPanel jplContentPane = new JPanel(new BorderLayout(10,10));
 	   jplContentPane.setOpaque(true);
-       jplContentPane.setPreferredSize(new Dimension(width + borderSize, height + borderSize));
-       jplContentPane.setMaximumSize(new Dimension(width + borderSize, height + borderSize ));
-       jplContentPane.setMinimumSize(new Dimension(width + borderSize, height + borderSize));
+      jplContentPane.setPreferredSize(new Dimension(width + borderSize, height + borderSize));
+      jplContentPane.setMaximumSize(new Dimension(width + borderSize, height + borderSize ));
+      jplContentPane.setMinimumSize(new Dimension(width + borderSize, height + borderSize));
 	   jplContentPane.setBackground(Color.CYAN);
 	   
 	   jplContentPane.add(canvasHolder, BorderLayout.CENTER);
@@ -203,32 +201,36 @@ public class Window implements ActionListener, ItemListener
 	   return jplContentPane;
   }
   
+  
+  // Because Window implements ActionListener, it has to have a actionPerformed method, though in this version of the program the action Performed method itself is not used for anything
   public void actionPerformed(ActionEvent e) 
   {
+     // I commented this stuff out because I found a better way to detect a buttonPress, just attach a dispatch command to each button onPress when you construct the button itself
 	  /*
 	  JMenuItem menuSource;
-      JButton buttonSource;
+     JButton buttonSource;
       
-      JMenuItem menuItemReference = new JMenuItem();
-      JButton buttonReference = new JButton();
+     JMenuItem menuItemReference = new JMenuItem();
+     JButton buttonReference = new JButton();
       
-      if(e.getClass().getName().equals(menuItemReference.getClass().getName()))
-      {
-         menuSource = (JMenuItem) (e.getSource());
-		   String menuString = "Menu Item source: " + menuSource.getText()
-				+ " (an instance of " + getClassName(menuSource) + ")";
-		   System.out.println(menuString);
-      }
-      else if(e.getClass().getName().equals(buttonReference.getClass().getName()))
-      {      
-         buttonSource = (JButton) (e.getSource());
-         System.out.println("hello");
-         String buttonString = buttonSource.getActionCommand();
-         System.out.println(buttonString + " has been pressed");
-      }
-      */
+     if(e.getClass().getName().equals(menuItemReference.getClass().getName()))
+     {
+        menuSource = (JMenuItem) (e.getSource());
+		  String menuString = "Menu Item source: " + menuSource.getText()
+			  + " (an instance of " + getClassName(menuSource) + ")";
+		  System.out.println(menuString);
+     }
+     else if(e.getClass().getName().equals(buttonReference.getClass().getName()))
+     {      
+        buttonSource = (JButton) (e.getSource());
+        System.out.println("hello");
+        String buttonString = buttonSource.getActionCommand();
+        System.out.println(buttonString + " has been pressed");
+     }
+     */
 	}
    
+   // Useful method though not used in program
    public void itemStateChanged(ItemEvent e) {
 		JMenuItem source = (JMenuItem) (e.getSource());
 		String s = "Menu Item source: "
@@ -245,10 +247,13 @@ public class Window implements ActionListener, ItemListener
 				.getLength());
 	}
    
-   protected String getClassName(Object o) {
+   // Useful method, used in the commented-out part of the actionPerformed methdod
+   // Gets the name of the class of any given object
+   protected String getClassName(Object o) 
+   {
 		String classString = o.getClass().getName();
 		int dotIndex = classString.lastIndexOf(".");
-		return classString.substring(dotIndex + 1); // Returns only Class name
+		return classString.substring(dotIndex + 1);      // Returns only Class name
 	}
    
    public int getBottomBarHeight()

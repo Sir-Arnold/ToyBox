@@ -19,7 +19,7 @@ public class Circle extends PhysicsThing implements MyShapes
       
       radius = 10;
       type = "circle";
-      ellipse = new Ellipse2D.Double((double) x, (double) y, radius * 2.0, radius * 2.0);
+      ellipse = new Ellipse2D.Double((double) position[0], (double) position[1], radius * 2.0, radius * 2.0);
       updateShape();
    }
    
@@ -67,8 +67,8 @@ public class Circle extends PhysicsThing implements MyShapes
       int h = (int) location[0];
       int k = (int) location[1];
       
-      int x = (int) myPosition[0];
-      int y = (int) myPosition[1];
+      int x = (int) position[0];
+      int y = (int) position[1];
       
       boolean inequality = (Math.pow((x - h), 2) + Math.pow((y - k), 2) <= radius);
       return inequality;
@@ -101,7 +101,7 @@ public class Circle extends PhysicsThing implements MyShapes
    
    public double[] getVelLinear()
    {
-      return myVelLinear;
+      return velLinear;
    }
    
    public void updateShape()
@@ -118,11 +118,6 @@ public class Circle extends PhysicsThing implements MyShapes
    public Shape getShape()
    {
 	   return ellipse;
-   }
-   
-   public float[] getForce()
-   {
-	   return myForce;
    }
 
    public int getRadius() 
