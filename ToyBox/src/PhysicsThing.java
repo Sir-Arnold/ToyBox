@@ -9,12 +9,12 @@ public abstract class PhysicsThing
    public int[] position;
    public double[] velLinear;
    public double angle;
-   public float velAngular;
+   public float velAngular;                             // angular velocity, not used
    public ArrayList<float[]> forces;                    // list of forces acting on this object, which effectively change the velocity of the object
    public ArrayList<int[]> locationsPushed;             // parallel to forces
-   double torque;                                       // not used
+   double torque;                                       // used in calculating angular velocity
    double mass;
-   double restitution;
+   double restitution;                                  // the "bounciness" of the ball
    String type;
    int[] min;                                           // AABB
    int[] max;
@@ -22,17 +22,15 @@ public abstract class PhysicsThing
    public PhysicsThing()
    {
       position = new int[2];
-      
-      position[0] = 0; position[1] = 0;
-      
       velLinear = new double[2];
       
+      position[0] = 0; position[1] = 0;
       velLinear[0] = 0; velLinear[1] = 0;
       
       angle = 0f;
       velAngular = 0f;
       
-      mass = 1;
+      mass = 5;
       restitution = 0.8;
       
       min = new int[2];
@@ -58,8 +56,8 @@ public abstract class PhysicsThing
       angle = 0f;
       velAngular = 0f;
       
-      mass = 1; // should pass this as a parameter here
-      restitution = 0.8;
+      mass = 1;                                       // should pass mass as a parameter here, but doesn't really affect much in the program in its current state
+      restitution = 0.95;
       
       min = new int[2];
       max = new int[2];
@@ -70,7 +68,8 @@ public abstract class PhysicsThing
       int[] cm= new int[2];
    }
    
-   public static void runSimpleCollideWalls(PhysicsThing thing)
+   // changes velocity depending on which wall the ball has hit
+   public static void runSimpleCollideWalls(PhysicsThing thing) 
    {
 	   int wallOperand = thing.hittingWall();
 	   if(wallOperand == 0)

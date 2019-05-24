@@ -97,13 +97,13 @@ public class Setting
    {
 	   if(things.size() > 0)
 	   {
-		   PhysicsThing.runSimpleCollideWalls(things.get(i));
+		   PhysicsThing.runSimpleCollideWalls(things.get(i));                                         // this is the only part of the method that actually does anything
 		   
 		   for(int j = 0; j < things.size(); j ++)
 		   {
 			   if(i != j)
 			   {
-				   if(PhysicsThing.testIntersection(things.get(i), things.get(j)))
+				   if(PhysicsThing.testIntersection(things.get(i), things.get(j)))                      // returns true as it should                    
 				   {
 					   Area intersection = PhysicsThing.getIntersection(things.get(i), things.get(j));
 					   Rectangle rect = intersection.getBounds();
