@@ -23,9 +23,10 @@ public class Runner extends Canvas implements Runnable
    {
       javax.swing.SwingUtilities.invokeLater(new Runnable() {
 
-			public void run() 
+			public void run()                          // run() is initially processed here but after done processing, run() is overridden by runner.run()
 			{
 				Runner runner = new Runner();
+				
 				
 				Runner.initVelX = 1;
 				Runner.initVelY = 1;
@@ -117,7 +118,7 @@ public class Runner extends Canvas implements Runnable
          }
          
          iterator++;
-         System.out.println("Iteration: " + iterator + " complete at " + timer/1000 + " seconds.");    // Console will be completely flooded by this, if it is working correctly
+         //System.out.println("Iteration: " + iterator + " complete at " + timer/1000 + " seconds.");    // Console will be completely flooded by this, if it is working correctly
          
       }
    }
@@ -159,7 +160,7 @@ public class Runner extends Canvas implements Runnable
    
    public void resetSetting()
    {
-	   setting = new Setting(this);
+	   this.setting = new Setting(this);
    }
    
    public Setting getSetting()
@@ -214,7 +215,7 @@ public class Runner extends Canvas implements Runnable
    public static double initVelX;
    public static double initVelY;
    
-   public static double UPDATE_CAP = 60.0;
+   public static double UPDATE_CAP = 60.0;                 // max updates per second
    
    public boolean pause;
    
