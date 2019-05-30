@@ -8,10 +8,10 @@ public class Circle extends PhysicsThing implements MyShapes
 {
    double delta;                            // the time since the circle was last processed
    
-   Shape shape;                   // the geometric shape associated with the Circle object
+   Shape shape;                             // the geometric shape associated with the Circle object
    
    protected int radius;                    // radius value is specific to circle, used in collisions and rendering
-   protected Ellipse2D ellipse;             // ellipse 
+   protected Ellipse2D ellipse;             // the specefic shape that represents this physics thing
   
    public Circle()
    {
@@ -78,23 +78,23 @@ public class Circle extends PhysicsThing implements MyShapes
    {
 	   if(position[1] + radius > Options.SETTING_HEIGHT)
 	   {
-		   return 2;
+		   return 2;                                  // integer representing the "floor"
 	   }
 	   else if(position[1] < 0)
 	   {
-		   return 0;
+		   return 0;                                  // representing the "ceiling"
 	   }
 	   else if(position[0] < 0)
 	   {
-		   return 1;
+		   return 1;                                  // representing left wall
 	   }
 	   else if(position[0] + radius > Options.SETTING_WIDTH)
 	   {
-		   return 3;
+		   return 3;                                 // representing right wall
 	   }
 	   else
 	   {
-		   return -1;
+		   return -1;                                // no wall collisions
 	   }
 		   
    }
@@ -104,13 +104,14 @@ public class Circle extends PhysicsThing implements MyShapes
       return velLinear;
    }
    
+   // overrides the updateShape() in MyShapes
    public void updateShape()
    {
 	   ellipse.setFrame((double) position[0], (double) position[1], radius * 2.0, radius * 2.0);
-	   min[0] = position[0] - radius;
-	   min[1] = position[1] - radius;
-	   max[0] = position[0] + radius;
-	   max[1] = position[1] + radius;
+	   min[0] = position[0] - radius;          // lowest x value
+	   min[1] = position[1] - radius;          // lowest y value
+	   max[0] = position[0] + radius;          // highest x value
+	   max[1] = position[1] + radius;          // highest y value
 	   
 	   shape = ellipse;
    }
