@@ -9,28 +9,30 @@ public abstract class PhysicsThing
    public int[] position;
    public double[] velLinear;
    public double angle;
-   public float velAngular;                             // angular velocity, not used
+   public float velAngular;
    public ArrayList<float[]> forces;                    // list of forces acting on this object, which effectively change the velocity of the object
    public ArrayList<int[]> locationsPushed;             // parallel to forces
-   double torque;                                       // used in calculating angular velocity
+   double torque;                                       // not sure if I need this or how I would use it
    double mass;
-   double restitution;                                  // the "bounciness" of the ball
+   double restitution;
    String type;
-   int[] min;                                           // AABB
+   int[] min;
    int[] max;
    
    public PhysicsThing()
    {
       position = new int[2];
-      velLinear = new double[2];
       
       position[0] = 0; position[1] = 0;
+      
+      velLinear = new double[2];
+      
       velLinear[0] = 0; velLinear[1] = 0;
       
       angle = 0f;
       velAngular = 0f;
       
-      mass = 5;
+      mass = 1;
       restitution = 0.8;
       
       min = new int[2];
@@ -56,8 +58,8 @@ public abstract class PhysicsThing
       angle = 0f;
       velAngular = 0f;
       
-      mass = 1;                                       // should pass mass as a parameter here, but doesn't really affect much in the program in its current state
-      restitution = 0.95;
+      mass = 1; // should pass this as a parameter here
+      restitution = 0.8;
       
       min = new int[2];
       max = new int[2];
@@ -67,9 +69,12 @@ public abstract class PhysicsThing
       locationsPushed = new ArrayList<int[]>();
       int[] cm= new int[2];
    }
+  
+   public abstract void tick(double delta);
+  
+   public abstract void render(Graphics2D g2);
    
-   // changes velocity depending on which wall the ball has hit
-   public static void runSimpleCollideWalls(PhysicsThing thing) 
+   public static void runSimpleCollideWalls(PhysicsThing thing)
    {
 	   int wallOperand = thing.hittingWall();
 	   if(wallOperand == 0)
@@ -97,48 +102,18 @@ public abstract class PhysicsThing
 		   
 	   }
    }
-	
-   public void increaseVelX()
-   {
-	   velLinear[0] += 1.0;
-   }
    
-   public void decreaseVelX()
-   {
-	   velLinear[0] -= 1.0;
-   }
+public abstract int hittingWall();
    
-   public void increaseVelY()
-   {
-	   velLinear[1] -= 5.0;
-   }
+   public abstract int findX(int y);
    
-   public void decreaseVelY()
-   {
-	   velLinear[1] += 5.0;
-   }
-	
-   public void addForce(int x, int y, double magnitudeX, double magnitudeY)
-   {
-	   float[] newForce = new float[2];
-	   newForce[0] = (float) magnitudeX; newForce[1] = (float) magnitudeY;
-	   forces.add(newForce);
-	   
-	   int[] newForceLocation = new int[2];
-	   newForceLocation[0] = x; newForceLocation[1] = y;
-	   locationsPushed.add(newForceLocation);
-	   
-   }
+   public abstract int findY(int x);
    
-   public abstract int hittingWall();
+   public abstract float[] getForce();
    
    public abstract Shape getShape();
    
    public abstract int getRadius();
-   
-   public abstract void tick(double delta);
-  
-   public abstract void render(Graphics2D g2);
    
    public void setVelLinear(double[] newVel)
    {
@@ -150,7 +125,27 @@ public abstract class PhysicsThing
 	   velAngular = rotSec * ((float) (2.0 * Math.PI));
    }
    
+   public void increaseVelX()
+   {
+	   velLinear[0] += 1.0; 
+   }
    
+   public void decreaseVelX()
+   {
+	   velLinear[0] -= 1.0; 
+   }
+   
+   public void increaseVelY()
+   {
+	   velLinear[1] -= 5.0;
+   }
+   
+   public void decreaseVelY()
+   {
+	   velLinear[1] += 5.0;
+   }
+   
+   public abstract void setValues(int[] position, double[] velLinear, double angle, float velAngular, double torque);
    
    public void printVelLinear()
    {
@@ -171,18 +166,14 @@ public abstract class PhysicsThing
    // given that a collision has occurred,
    // using the location of the collision, the direction at which the pusher was moving, and the magnitude of the push
    // both calculates the new velocity of the pushed and returns the magnitude of the reversed pushback
-   // the program doesn't use this in its current state, object-object collision doesn't work
    public void push(PhysicsThing target, int x, int y)
    {
 	   target.addForce(x, y, velLinear[0] * mass, velLinear[1] * mass);
    }
    
-   // given wallOperand (the int identification of the wall) push the object appropriately
-   // not used in the program's current state
    public void pushedByWall(int wallOperand)
    {
-	   /*
-      int[] targetVertice = new int[2];
+	   int[] targetVertice = new int[2];
 	   if(wallOperand == 0)
 	   {
 		   targetVertice[0] = findXWithMinY();
@@ -238,10 +229,16 @@ public abstract class PhysicsThing
 			   addForce(targetVertice[0], targetVertice[1], velLinear[0] * mass * -1, 0); 
 		   }
 	   }
-      */
    }
    
-   // resolve how the applied forces affect velocity
+   protected abstract int findYWithMaxX();
+
+   protected abstract int findXWithMaxY();
+
+   protected abstract int findYWithMinX();
+
+   protected abstract int findXWithMinY();
+
    public void decidePushes(double delta)
    {   
 	  float xForce = 0;
@@ -288,7 +285,6 @@ public abstract class PhysicsThing
       
    }
    
-   // this method works, but is not used
    public static boolean testIntersection(PhysicsThing a, PhysicsThing b)
    {
 	   Area areaA = new Area(a.getShape());
@@ -301,7 +297,6 @@ public abstract class PhysicsThing
 		   return true;
    }
    
-   // decides if the object is hitting a wall and pushes it appropriately
    public static void runCollideWalls(PhysicsThing thing)
    {
 	   int wallOperand = thing.hittingWall();
@@ -349,7 +344,17 @@ public abstract class PhysicsThing
 	   return position;
    }
    
-   
+   public void addForce(int x, int y, double magnitudeX, double magnitudeY)
+   {
+	   float[] newForce = new float[2];
+	   newForce[0] = (float) magnitudeX; newForce[1] = (float) magnitudeY;
+	   forces.add(newForce);
+	   
+	   int[] newForceLocation = new int[2];
+	   newForceLocation[0] = x; newForceLocation[1] = y;
+	   locationsPushed.add(newForceLocation);
+	   
+   }
    
    
    
