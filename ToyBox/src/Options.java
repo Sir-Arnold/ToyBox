@@ -1,11 +1,11 @@
 public class Options
 {
-   public static int WIDTH;
-   public static int SETTING_WIDTH;
-   public static int HEIGHT;
-   public static int SETTING_HEIGHT;
-   public static double INIT_VELX;
-   public static double INIT_VELY;
+   public static int WIDTH;                    // Width of whole window
+   public static int SETTING_WIDTH;            // Width of setting on its own
+   public static int HEIGHT;                   // Height of whole window
+   public static int SETTING_HEIGHT;           // Height of setting on its own
+   public static double INIT_VELX;             // Initial X component of the velocity of the ball
+   public static double INIT_VELY;             // Initial Y component of the veolcity of the ball
    private static double gravity;
    
    public Options()

@@ -9,14 +9,14 @@ public abstract class PhysicsThing
    public int[] position;
    public double[] velLinear;
    public double angle;
-   public float velAngular;
+   public float velAngular;				// angular velocity, not used
    public ArrayList<float[]> forces;                    // list of forces acting on this object, which effectively change the velocity of the object
    public ArrayList<int[]> locationsPushed;             // parallel to forces
-   double torque;                                       // not sure if I need this or how I would use it
+   double torque;                                       // used in calculating angular velocity
    double mass;
-   double restitution;
+   double restitution;					// the "bounciness" of the ball
    String type;
-   int[] min;
+   int[] min;						// AABB
    int[] max;
    
    public PhysicsThing()
@@ -32,7 +32,7 @@ public abstract class PhysicsThing
       angle = 0f;
       velAngular = 0f;
       
-      mass = 1;
+      mass = 1;						// should pass mass as a parameter here, but doesn't really affect much in the program in its current state
       restitution = 0.8;
       
       min = new int[2];
@@ -58,7 +58,7 @@ public abstract class PhysicsThing
       angle = 0f;
       velAngular = 0f;
       
-      mass = 1; // should pass this as a parameter here
+      mass = 1;                                            // should pass this as a parameter here
       restitution = 0.8;
       
       min = new int[2];
@@ -74,6 +74,7 @@ public abstract class PhysicsThing
   
    public abstract void render(Graphics2D g2);
    
+   // changes velocity depending on which wall the ball has hit
    public static void runSimpleCollideWalls(PhysicsThing thing)
    {
 	   int wallOperand = thing.hittingWall();
@@ -166,13 +167,17 @@ public abstract int hittingWall();
    // given that a collision has occurred,
    // using the location of the collision, the direction at which the pusher was moving, and the magnitude of the push
    // both calculates the new velocity of the pushed and returns the magnitude of the reversed pushback
+   // the program doesn't use this in its current state, object-object collision doesn't work
    public void push(PhysicsThing target, int x, int y)
    {
 	   target.addForce(x, y, velLinear[0] * mass, velLinear[1] * mass);
    }
    
+   // given wallOperand (the int identification of the wall) push the object appropriately
+   // not used in the program's current state
    public void pushedByWall(int wallOperand)
    {
+	   /*
 	   int[] targetVertice = new int[2];
 	   if(wallOperand == 0)
 	   {
@@ -229,8 +234,10 @@ public abstract int hittingWall();
 			   addForce(targetVertice[0], targetVertice[1], velLinear[0] * mass * -1, 0); 
 		   }
 	   }
+	   /*
    }
    
+   // resolve how the applied forces affect velocity
    protected abstract int findYWithMaxX();
 
    protected abstract int findXWithMaxY();
@@ -285,6 +292,7 @@ public abstract int hittingWall();
       
    }
    
+   // this method works, but is not use
    public static boolean testIntersection(PhysicsThing a, PhysicsThing b)
    {
 	   Area areaA = new Area(a.getShape());
@@ -297,6 +305,7 @@ public abstract int hittingWall();
 		   return true;
    }
    
+   // decides if the object is hitting a wall and pushes it appropriately
    public static void runCollideWalls(PhysicsThing thing)
    {
 	   int wallOperand = thing.hittingWall();
